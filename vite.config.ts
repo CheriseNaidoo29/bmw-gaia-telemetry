@@ -4,8 +4,21 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  // Automatic base detection for GitHub Pages & custom domains
+  let base = './';
+  if (process.env.BASE_URL) {
+    base = process.env.BASE_URL;
+  } else if (process.env.GITHUB_REPOSITORY) {
+    const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+    if (repo && repo.toLowerCase() === `${owner.toLowerCase()}.github.io`) {
+      base = '/';
+    } else if (repo) {
+      base = `/${repo}/`;
+    }
+  }
+
   return {
-    base: './',
+    base,
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

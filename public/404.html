@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title>BMW GAIA Telemetry OS</title>
-    <script>
-      // Single Page Application redirect script for GitHub Pages
-      sessionStorage.redirect = location.href;
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License - https://github.com/rafgraph/spa-github-pages
+      var pathSegmentsToKeep = 1;
+
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
     </script>
-    <meta http-equiv="refresh" content="0;URL='./'" />
   </head>
-  <body>
+  <body style="background-color: #131315; color: #e5e1e4;">
   </body>
 </html>
