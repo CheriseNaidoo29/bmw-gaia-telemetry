@@ -1,0 +1,6 @@
+{
+  "name": "BMW GAIA Telemetry OS",
+  "description": "Mission-critical AI monitoring console and telemetry dashboard for BMW GAIA infrastructure, autonomous vehicle diagnostics, and ECS cloud clusters.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
