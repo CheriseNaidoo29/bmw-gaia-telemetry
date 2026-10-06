@@ -22,12 +22,45 @@ const NAV_ITEMS: SubsystemNav[] = [
 ];
 
 export default function App() {
-  const [activeNav, setActiveNav] = useState('infrastructure-overview');
+  const getInitialNav = () => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '');
+      if (NAV_ITEMS.some((n) => n.id === hash)) return hash;
+      const lastPath = window.location.pathname.split('/').filter(Boolean).pop();
+      if (lastPath && NAV_ITEMS.some((n) => n.id === lastPath)) return lastPath;
+    }
+    return 'infrastructure-overview';
+  };
+
+  const [activeNav, setActiveNav] = useState(getInitialNav);
   const [currentTime, setCurrentTime] = useState('14:32:08.412 UTC');
   const [searchQuery, setSearchQuery] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showAngularModal, setShowAngularModal] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+
+  // Sync hash routing with navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (NAV_ITEMS.some((n) => n.id === hash)) {
+        setActiveNav(hash);
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
+    };
+  }, []);
+
+  const handleNavSelect = (id: string) => {
+    setActiveNav(id);
+    if (typeof window !== 'undefined') {
+      window.location.hash = id;
+    }
+  };
 
   // Remediation Action States
   const [actionStates, setActionStates] = useState<{ [key: string]: string }>({});
@@ -129,7 +162,7 @@ export class GaiaTelemetryComponent {
               return (
                 <button
                   key={item.id}
-                  onClick={() => setActiveNav(item.id)}
+                  onClick={() => handleNavSelect(item.id)}
                   className={`w-full flex items-center gap-2 px-3 py-2 rounded transition-all text-sm text-left ${
                     isActive
                       ? 'bg-[#0066b1] text-white font-bold shadow-sm'
